@@ -9,13 +9,13 @@ wlan_2g_ssid="int_2.4G"                             # 2G 无线名称
 wlan_5g_ssid="int_5G"                               # 5G 无线名称
 wlan_guest_2g_ssid="int_pub_2.4G"                   # 2G 访客无线名称
 wlan_guest_5g_ssid="int_pub_5G"                     # 5G 访客无线名称
-wlan_2g_psk=" "                                     # 2G WIFI密码最少8位 空白为不设置
-wlan_5g_psk=" "                                     # 5G WIFI密码最少8位 空白为不设置
-version_time=$(date +%Y%m%d)                        # 更新时版本号时间: 20251122
-default_file="./user/shared/defaults.h"             # 默认配置文件
-timezone="CST-8"                                    # 時區
+wlan_2g_psk=""                                      # 2G WIFI密码最少8位 空白为不设置
+wlan_5g_psk=""                                      # 5G WIFI密码最少8位 空白为不设置
+timezone="CCT-8"                                    # 時區
 ntp_server1="pool.ntp.org"                          # NTP伺服器1
 ntp_server2="time.nist.gov"                         # NTP伺服器2
+version_time=$(date +%Y%m%d)                        # 更新时版本号时间: 20251122
+default_file="./user/shared/defaults.h"             # 默认配置文件
 
 echo "修改用户名"
 sed -i 's/SYS_USER_ROOT		"admin"/SYS_USER_ROOT		"'$user_name'"/g' $default_file
@@ -26,11 +26,11 @@ sed -i 's/DEF_ROOT_PASSWORD	"admin"/DEF_ROOT_PASSWORD	"'$user_password'"/g' $def
 echo "修改 LAN IP 地址"
 sed -i "s/192.168.2/$lan_ip/g" $default_file
 
-echo "修改時區"
-sed -i 's/DEF_WLAN_2G_CC	"TW"/DEF_WLAN_2G_CC	"'$wlan_2g_cc'"/g' $default_file
+echo "修改 2G 國家碼"
+sed -i 's/DEF_WLAN_2G_CC	  "CN"/DEF_WLAN_2G_CC		"'$wlan_2g_cc'"/g' $default_file
 
-echo "修改時區"
-sed -i 's/DEF_WLAN_5G_CC	"DB"/DEF_WLAN_5G_CC	"'$wlan_5g_cc'"/g' $default_file
+echo "修改 5G 國家碼"
+sed -i 's/DEF_WLAN_5G_CC	  "US"/DEF_WLAN_5G_CC		"'$wlan_5g_cc'"/g' $default_file
 
 echo "修改 2G 无线名称"
 sed -i 's/DEF_WLAN_2G_SSID	BOARD_PID "_%s"/DEF_WLAN_2G_SSID	"'$wlan_2g_ssid'"/g' $default_file
@@ -51,13 +51,13 @@ echo "修改 5GHz WIFI 密码"
 sed -i 's/DEF_WLAN_5G_PSK		"1234567890"/DEF_WLAN_5G_PSK		"'$wlan_5g_psk'"/g' $default_file
 
 echo "修改時區"
-sed -i 's/DEF_TIMEZONE	"CST-8"/DEF_TIMEZONE	"'$timezone'"/g' $default_file
+sed -i 's/DEF_TIMEZONE	 "CST-8"/DEF_TIMEZONE	"'$timezone'"/g' $default_file
 
 echo "修改NTP伺服器1"
-sed -i 's/DEF_NTP_SERVER0	"pool.ntp.org"/DEF_NTP_SERVER0	"'$ntp_server1'"/g' $default_file
+sed -i 's/DEF_NTP_SERVER0		"ntp1.aliyun.com"/DEF_NTP_SERVER0	"'$ntp_server1'"/g' $default_file
 
 echo "修改NTP伺服器2"
-sed -i 's/DEF_NTP_SERVER0	"time.nist.gov"/DEF_NTP_SERVER1	"'$ntp_server2'"/g' $default_file
+sed -i 's/DEF_NTP_SERVER1		"time1.cloud.tencent.com"/DEF_NTP_SERVER1	"'$ntp_server2'"/g' $default_file
 
 echo "更新版本号时间"
 sed -i "s/FIRMWARE_BUILDS_REV=.*/FIRMWARE_BUILDS_REV=$version_time/g" ./versions.inc
