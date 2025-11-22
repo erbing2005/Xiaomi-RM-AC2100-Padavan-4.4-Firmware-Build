@@ -48,8 +48,7 @@ jobs:
       if: (!cancelled())
       run: |
         git clone --depth=1 $src_git $src_dir
-        cp $lang_dir/dict/TW.dict $work_dir/user/www/dict
-        cp $lang_dir/Makefile $work_dir/user/www
+        mv $lang_dir/ $work_dir/user/www
         cd $src_dir/toolchain-mipsel && chmod +x dl_toolchain.sh
         ./dl_toolchain.sh
     
