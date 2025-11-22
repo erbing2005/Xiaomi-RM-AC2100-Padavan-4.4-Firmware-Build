@@ -50,11 +50,15 @@ jobs:
         git clone --depth=1 $src_git $src_dir
         cd $src_dir/toolchain-mipsel && chmod +x dl_toolchain.sh
         ./dl_toolchain.sh
-    
-    - name: Import Custom configs
+
+    - name: Import language configs
       if: (!cancelled())
       run: |
         mv $lang_dir/* $work_dir/user/www
+      
+    - name: Import Custom configs
+      if: (!cancelled())
+      run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
         mv $config_file $work_dir/.config
         mv $custom_script $work_dir/
