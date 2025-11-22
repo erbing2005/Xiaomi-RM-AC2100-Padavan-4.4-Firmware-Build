@@ -41,7 +41,7 @@ jobs:
           texinfo build-essential help2man pkg-config zlib1g-dev libgmp3-dev \
           libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget libc-dev-bin &
           wait
-          sudo timedatectl set-timezone "Asia/Shanghai"
+          sudo timedatectl set-timezone "Asia/Taipei"
 
     - name: Clone source and Download toolchain
       if: (!cancelled())
