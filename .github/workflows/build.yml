@@ -16,7 +16,7 @@ env:
   firmware_dir: /opt/firmware
   config_file: config
   custom_script: custom.sh
-  lang_dir: /lang
+  lang_dir: lang
   
 jobs:
   build:
