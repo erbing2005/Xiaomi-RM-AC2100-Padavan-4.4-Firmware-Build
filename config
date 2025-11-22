@@ -85,6 +85,7 @@ CONFIG_FIRMWARE_INCLUDE_CIFS=n
 ############################################################
 
 ### Include WebUI international resources. Increased firmware size
+CONFIG_FIRMWARE_INCLUDE_LANG_TW=y
 CONFIG_FIRMWARE_INCLUDE_LANG_CN=y
 CONFIG_FIRMWARE_INCLUDE_LANG_BR=y
 CONFIG_FIRMWARE_INCLUDE_LANG_CZ=y
