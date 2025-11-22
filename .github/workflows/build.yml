@@ -54,7 +54,7 @@ jobs:
     - name: Import language configs
       if: (!cancelled())
       run: |
-        mv $lang_dir/* $work_dir/user/www
+        cp -rf $lang_dir/* $work_dir/user/www
       
     - name: Import Custom configs
       if: (!cancelled())
