@@ -16,7 +16,8 @@ env:
   firmware_dir: /opt/firmware
   config_file: config
   custom_script: custom.sh
-
+  lang_dir: /lang
+  
 jobs:
   build:
     name: build
@@ -47,6 +48,8 @@ jobs:
       if: (!cancelled())
       run: |
         git clone --depth=1 $src_git $src_dir
+        cp $lang_dir/dict/TW.dict $work_dir/user/www/dict
+        cp $lang_dir/Makefile $work_dir/user/www
         cd $src_dir/toolchain-mipsel && chmod +x dl_toolchain.sh
         ./dl_toolchain.sh
     
@@ -54,7 +57,7 @@ jobs:
       if: (!cancelled())
       run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
-        mv $config_file $work_dir/.config
+        c $config_file $work_dir/.config
         mv $custom_script $work_dir/
         cd $work_dir
         chmod +x build_firmware_modify && chmod +x $custom_script
