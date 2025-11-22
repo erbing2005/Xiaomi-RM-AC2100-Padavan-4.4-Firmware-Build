@@ -57,7 +57,7 @@ jobs:
       if: (!cancelled())
       run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
-        c $config_file $work_dir/.config
+        mv $config_file $work_dir/.config
         mv $custom_script $work_dir/
         cd $work_dir
         chmod +x build_firmware_modify && chmod +x $custom_script
