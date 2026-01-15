@@ -121,7 +121,7 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_LANG_CN),y)
 	sed $(DWURL_MOD_PATTERN) -i $(ROMFS_DIR)/www/CN.dict
 endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_LANG_TW),y)
-	echo "LANG_TW=简体中文" >> $(ROMFS_DIR)/www/EN.header
+	echo "LANG_TW=繁體中文" >> $(ROMFS_DIR)/www/EN.header
 	cp dict/TW.dict $(ROMFS_DIR)/www
 	sed $(BOARD_PATTERN) -i $(ROMFS_DIR)/www/TW.dict
 	sed $(COPYR_PATTERN) -i $(ROMFS_DIR)/www/TW.dict
