@@ -21,7 +21,7 @@ env:
 jobs:
   build:
     name: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # 使用固定版本確保編譯環境穩定，與上游倉庫保持一致
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
@@ -30,9 +30,11 @@ jobs:
       contents: write
 
     steps:
+    # 檢出代碼
     - name: Checkout
       uses: actions/checkout@v4
 
+    # 安裝編譯所需的依賴包
     - name: Install dependencies
       if: (!cancelled())
       run: |
@@ -44,6 +46,7 @@ jobs:
           wait
           sudo timedatectl set-timezone "Asia/Taipei"
 
+    # 克隆源碼並下載工具鏈
     - name: Clone source and Download toolchain
       if: (!cancelled())
       run: |
@@ -56,16 +59,23 @@ jobs:
       #run: |
         #cp -rf $lang_dir/* $work_dir/user/www
       
+    # 導入自定義配置文件，custom.sh 為可選
     - name: Import Custom configs
       if: (!cancelled())
       run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
-        mv $config_file $work_dir/.config
-        mv $custom_script $work_dir/
-        cd $work_dir
-        chmod +x build_firmware_modify && chmod +x $custom_script
-        ./$custom_script
+        cp $config_file $work_dir/.config
+        if [ -f "$custom_script" ]; then
+          cp $custom_script $work_dir/
+          cd $work_dir
+          chmod +x build_firmware_modify && chmod +x $custom_script
+          ./$custom_script
+        else
+          cd $work_dir
+          chmod +x build_firmware_modify
+        fi
 
+    # 編譯固件
     - name: Compile the firmware
       if: (!cancelled())
       id: compile
@@ -74,8 +84,9 @@ jobs:
         fakeroot ./build_firmware_modify ${{ matrix.device }} 0
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         mkdir -p $firmware_dir
-        mv images/*.trx $firmware_dir
+        cp images/*.trx $firmware_dir
 
+    # 上傳固件到 Artifact
     - name: Upload firmware directory
       uses: actions/upload-artifact@v4
       if: ${{ success() }} && !cancelled()
@@ -85,6 +96,7 @@ jobs:
         if-no-files-found: error
         
 
+    # 上傳固件到 Release
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
       env:
