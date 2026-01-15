@@ -79,7 +79,7 @@ jobs:
       id: compile
       run: |
         cd $work_dir
-        fakeroot ./build_firmware_modify ${{ matrix.device }} 0
+        fakeroot ./build_firmware_modify ${{ matrix.device }}
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         mkdir -p $firmware_dir
         if ls images/*.trx 1> /dev/null 2>&1; then
