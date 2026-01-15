@@ -39,7 +39,7 @@ default_file="./user/shared/defaults.h"             # 默認配置文件位置
 echo "修改用戶名"
 sed -i 's/SYS_USER_ROOT		"admin"/SYS_USER_ROOT		"'$user_name'"/g' $default_file
 
-echo "修改登陆密码"
+echo "修改登錄密碼"
 sed -i 's/DEF_ROOT_PASSWORD	"admin"/DEF_ROOT_PASSWORD	"'$user_password'"/g' $default_file
 
 echo "修改 LAN IP 地址"

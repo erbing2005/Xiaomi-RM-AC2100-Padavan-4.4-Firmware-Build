@@ -84,7 +84,12 @@ jobs:
         fakeroot ./build_firmware_modify ${{ matrix.device }} 0
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         mkdir -p $firmware_dir
-        cp images/*.trx $firmware_dir
+        if ls images/*.trx 1> /dev/null 2>&1; then
+          cp images/*.trx $firmware_dir
+        else
+          echo "Error: No firmware files found"
+          exit 1
+        fi
 
     # 上傳固件到 Artifact
     - name: Upload firmware directory
