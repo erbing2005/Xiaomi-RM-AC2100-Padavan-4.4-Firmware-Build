@@ -65,14 +65,12 @@ jobs:
       run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
         cp $config_file $work_dir/.config
-        if [ -f "$custom_script" ]; then
-          cp $custom_script $work_dir/
-          cd $work_dir
-          chmod +x build_firmware_modify && chmod +x $custom_script
+        cd $work_dir
+        chmod +x build_firmware_modify
+        if [ -f "../$custom_script" ]; then
+          cp ../$custom_script ./
+          chmod +x $custom_script
           ./$custom_script
-        else
-          cd $work_dir
-          chmod +x build_firmware_modify
         fi
 
     # 編譯固件
@@ -87,7 +85,7 @@ jobs:
         if ls images/*.trx 1> /dev/null 2>&1; then
           cp images/*.trx $firmware_dir
         else
-          echo "Error: No firmware files found"
+          echo "Error: No firmware files found in images/ directory. Check compilation logs for errors."
           exit 1
         fi
 
