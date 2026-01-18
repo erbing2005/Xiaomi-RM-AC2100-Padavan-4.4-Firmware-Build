@@ -21,7 +21,7 @@ env:
 jobs:
   build:
     name: build
-    runs-on: ubuntu-20.04  # 使用固定版本確保編譯環境穩定，與上游倉庫保持一致
+    runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
