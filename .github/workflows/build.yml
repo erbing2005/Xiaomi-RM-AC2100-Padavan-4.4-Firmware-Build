@@ -54,26 +54,21 @@ jobs:
         cd $src_dir/toolchain-mipsel && chmod +x dl_toolchain.sh
         ./dl_toolchain.sh
 
-    #- name: Import language configs
-      #if: (!cancelled())
-      #run: |
+    - name: Import language configs
+      if: (!cancelled())
+      run: |
         #cp -rf $lang_dir/* $work_dir/user/www
       
-    # 導入自定義配置文件，custom.sh 為可選
     - name: Import Custom configs
       if: (!cancelled())
       run: |
         cp $config_file $work_dir/configs/templates/${{ matrix.device }}.config
-        cp $config_file $work_dir/.config
+        mv $config_file $work_dir/.config
+        mv $custom_script $work_dir/
         cd $work_dir
-        chmod +x build_firmware_modify
-        if [ -f "../$custom_script" ]; then
-          cp ../$custom_script ./
-          chmod +x $custom_script
-          ./$custom_script
-        fi
+        chmod +x build_firmware_modify && chmod +x $custom_script
+        ./$custom_script
 
-    # 編譯固件
     - name: Compile the firmware
       if: (!cancelled())
       id: compile
@@ -82,12 +77,7 @@ jobs:
         fakeroot ./build_firmware_modify ${{ matrix.device }} 0
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         mkdir -p $firmware_dir
-        if ls images/*.trx 1> /dev/null 2>&1; then
-          cp images/*.trx $firmware_dir
-        else
-          echo "Error: No firmware files found in images/ directory. Check compilation logs for errors."
-          exit 1
-        fi
+        mv images/*.trx $firmware_dir
 
     # 上傳固件到 Artifact
     - name: Upload firmware directory
