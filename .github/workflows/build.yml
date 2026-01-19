@@ -74,7 +74,7 @@ jobs:
       id: compile
       run: |
         cd $work_dir
-        fakeroot ./build_firmware_modify ${{ matrix.device }} 0
+        fakeroot ./build_firmware_modify ${{ matrix.device }}
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         mkdir -p $firmware_dir
         mv images/*.trx $firmware_dir
